@@ -1,0 +1,20 @@
+/** Portable, authenticated-encryption backup format. Restore is an operator action into a fresh database only. */
+export const backupTables=['accounts','clients','cases','case_access','applicants','checklist_templates','checklist_items','document_versions','messages','tasks','appointments','quotes','payments','notifications','content','service_authorisations','publication_permissions','success_stories','audit_events','settings','privacy_requests','marketing_assets','enquiries'];
+const encode=(b:Uint8Array)=>{let out='';for(let i=0;i<b.length;i+=8192)out+=String.fromCharCode(...b.slice(i,i+8192));return btoa(out)};
+const decode=(s:string)=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function key(secret:string){const bytes=decode(secret);if(bytes.length!==32)throw Error('Backup encryption needs a separate 32-byte base64 key.');return crypto.subtle.importKey('raw',bytes,'AES-GCM',false,['encrypt','decrypt'])}
+export async function sealBackup(value:any,secret:string){const iv=crypto.getRandomValues(new Uint8Array(12));const bytes=await crypto.subtle.encrypt({name:'AES-GCM',iv},await key(secret),new TextEncoder().encode(JSON.stringify(value)));return {format:'trip-bhai-backup-1',iv:encode(iv),ciphertext:encode(new Uint8Array(bytes))}}
+export async function openBackup(value:any,secret:string){if(value.format!=='trip-bhai-backup-1')throw Error('Unsupported backup format.');return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:decode(value.iv)},await key(secret),decode(value.ciphertext))))}
+export async function captureBackup(database:any,bucket:any,secret:string){
+ const results=await database.batch(backupTables.map(t=>database.prepare(`SELECT * FROM ${t}`).bind()));const tables=Object.fromEntries(backupTables.map((t,i)=>[t,results[i].results]));
+ // Session cookies and pending invitations deliberately do not survive a restore.
+ let size=0;const files=[];for(const file of [...tables.document_versions,...tables.marketing_assets]){if(file.scan==='infected')continue;const object=await bucket.get(file.object_key);if(!object)throw Error('Backup incomplete: a referenced object is missing.');const bytes=new Uint8Array(await object.arrayBuffer());size+=bytes.length;if(size>24*1024*1024)throw Error('This backup exceeds the interactive limit. Use the documented streamed operator backup.');const digest=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('');if(digest!==file.digest)throw Error('Backup stopped: object integrity mismatch.');files.push({key:file.object_key,digest,data:encode(bytes)})}
+ return sealBackup({schema:1,createdAt:Date.now(),tables,files},secret);
+}
+export async function restoreBackup(snapshot:any,database:any,bucket:any){
+ if(snapshot.schema!==1)throw Error('Unsupported schema.');for(const t of backupTables){const r=await database.prepare(`SELECT COUNT(*) n FROM ${t}`).bind().first();if(r.n)throw Error('Restore requires a fresh, empty target database.');if(!Array.isArray(snapshot.tables[t]))throw Error('Missing table '+t)}
+ const operations=[];for(const t of backupTables){const columns=(await database.prepare(`PRAGMA table_info(${t})`).bind().all()).results.map((c:any)=>c.name);for(const row of snapshot.tables[t]){const keys=Object.keys(row);if(keys.some(k=>!columns.includes(k)))throw Error('Unknown backup column');operations.push(database.prepare(`INSERT INTO ${t}(${keys.map(k=>'"'+k+'"').join(',')}) VALUES(${keys.map(()=>'?').join(',')})`).bind(...keys.map(k=>row[k])))}}
+ for(const file of snapshot.files){if(!/^(private\/[a-f0-9-]+\/[a-f0-9-]+|marketing\/[a-f0-9-]+)$/.test(file.key))throw Error('Invalid object path');const bytes=decode(file.data);const digest=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('');if(digest!==file.digest)throw Error('Backup object integrity mismatch.');}
+ for(const file of snapshot.files)await bucket.put(file.key,decode(file.data));if(operations.length)await database.batch(operations);
+ return {tables:backupTables.length,files:snapshot.files.length};
+}
