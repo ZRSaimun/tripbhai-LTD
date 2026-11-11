@@ -132,3 +132,37 @@ if (chat) {
   if (!toggle) panel.hidden = false;
   chat.hidden = false;
 }
+
+
+/* Cinematic motion: progressive enhancement only */
+(() => {
+  const targets = document.querySelectorAll(
+    '.visa-stories-copy, .visa-stories-scene, .visa-trust a, .visa-process li, .person, .visa-travel, .cta, .page-head > *, .split > *, .contact-grid > *, .faq > *'
+  );
+  targets.forEach((element) => element.classList.add('cinematic-reveal'));
+
+  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    targets.forEach((element) => element.classList.add('is-visible'));
+  } else {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
+    targets.forEach((element, index) => {
+      element.style.transitionDelay = Math.min(index % 4, 3) * 70 + 'ms';
+      observer.observe(element);
+    });
+  }
+
+  const heroImage = document.querySelector('.hero-image img');
+  if (heroImage && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.addEventListener('scroll', () => {
+      const y = Math.min(window.scrollY * 0.055, 34);
+      heroImage.style.transform = 'translate3d(0,' + y + 'px,0) scale(1.035)';
+    }, { passive: true });
+  }
+})();
