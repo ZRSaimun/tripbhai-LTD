@@ -42,3 +42,8 @@ next-env.d.ts
 /work/
 
 *.tsbuildinfo
+
+# Copied into place by the Pages workflow; the originals live in public/
+public-pages/assets/*.jpg
+public-pages/assets/*.png
+public-pages/assets/*.svg

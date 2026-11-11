@@ -15,7 +15,7 @@ class Page(HTMLParser):
             if key in a:self.links.append(a[key])
 class PublicSite(unittest.TestCase):
     def test_pages_and_links(self):
-        pages=list(ROOT.rglob('index.html')); self.assertEqual(len(pages),8)
+        pages=list(ROOT.rglob('index.html')); self.assertEqual(len(pages),9)
         for file in pages:
             text=file.read_text(); p=Page(text)
             with self.subTest(page=str(file.relative_to(ROOT))):

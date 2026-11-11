@@ -1,5 +1,9 @@
 name: Publish Trip Bhai GitHub Pages site
 
+# Every push to main that touches the public website (its generator, tests,
+# pages, styles, scripts or images) rebuilds, checks and publishes the site at
+# https://tripbhai.co.uk/. Merged pull requests and edits made directly on
+# GitHub both land as pushes to main, so they trigger this workflow too.
 on:
   push:
     branches: [main]
@@ -7,6 +11,8 @@ on:
       - "public-pages/**"
       - "public/images/**"
       - "public/favicon.svg"
+      - "scripts/build-public-site.py"
+      - "tests/public-site.test.py"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -30,16 +36,21 @@ jobs:
         uses: actions/checkout@v4
       - name: Configure Pages
         uses: actions/configure-pages@v5
+      - name: Generate the public pages from the approved content
+        run: python3 scripts/build-public-site.py
       - name: Prepare the static site assets
         run: |
           mkdir -p public-pages/assets
-          cp public/images/*.jpg public-pages/assets/
+          cp public/images/amalfi.jpg public/images/cappadocia.jpg public/images/london.jpg public-pages/assets/
           cp public/images/trip-bhai-logo.png public-pages/assets/
           cp public/favicon.svg public-pages/assets/
+          test -f public-pages/CNAME && cat public-pages/CNAME
       - name: Validate public pages
         run: |
           python3 tests/public-site.test.py
           node --check public-pages/site.js
+          # The generator must be the source of truth: committed pages may not drift from it.
+          git diff --exit-code -- public-pages/ || { echo "::error::public-pages/ is out of date. Run: python3 scripts/build-public-site.py and commit the result."; exit 1; }
       - name: Upload the Pages site
         uses: actions/upload-pages-artifact@v3
         with:

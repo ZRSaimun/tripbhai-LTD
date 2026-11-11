@@ -26,7 +26,19 @@ Database schema: `db/schema.ts`. Migrations: `drizzle/`. Keep secrets out of sou
 
 ## Hosting and domain
 
-The existing production site is served by the Sites/Cloudflare Worker environment. GitHub Pages cannot run the Worker API, D1 or private R2 workflows, so the repository’s `CNAME` file alone does not publish this application through GitHub Pages. The `tripbhai.co.uk` custom-domain mapping is pending DNS verification; the existing Sites URL remains live while that is completed.
+The public website at **https://tripbhai.co.uk/** is hosted on **GitHub Pages** from this repository. The full application (client portal, enquiry backend, Worker API, D1 and private R2) stays on the separate Sites host at [beyond-travel-portfolio.saintblue022.chatgpt.site](https://beyond-travel-portfolio.saintblue022.chatgpt.site); the public site links to it for client login. GitHub Pages cannot run that backend, so the two are kept apart on purpose.
+
+Domain configuration (set up 11 November 2026):
+
+- **GitHub:** Settings → Pages → Source = GitHub Actions; Custom domain = `tripbhai.co.uk`; Enforce HTTPS on. `public-pages/CNAME` keeps the domain on every deploy.
+- **Namecheap DNS (BasicDNS):** `A @` → 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153; `CNAME www` → `zrsaimun.github.io.`; mail settings = Email Forwarding (`info@tripbhai.co.uk` → tripbhaiofficial@gmail.com) with the SPF TXT record Namecheap adds for it.
+- `www.tripbhai.co.uk` redirects to `tripbhai.co.uk` and HTTP redirects to HTTPS, both handled by GitHub Pages once the custom domain is verified.
+
+### Updating the website
+
+1. Edit the approved content in `scripts/build-public-site.py` (page copy, team, navigation) or the shared `public-pages/site.css` / `public-pages/site.js`. Put new photographs in `public/images/` and add them to the copy step in `.github/workflows/pages.yml`.
+2. Run `python3 scripts/build-public-site.py` and commit the regenerated `public-pages/` files together with your change. (The workflow fails if the committed pages do not match the generator.)
+3. Push to `main`, merge a pull request into `main`, or edit on GitHub and commit to `main`. The **Publish Trip Bhai GitHub Pages site** workflow (Actions tab) rebuilds, runs `tests/public-site.test.py` and deploys. Changes appear at https://tripbhai.co.uk/ within a minute or two of a green run.
 
 ## Privacy and source assets
 
