@@ -166,3 +166,55 @@ if (chat) {
     }, { passive: true });
   }
 })();
+
+
+/* Trip Bhai journey film */
+(() => {
+  const chapters = [...document.querySelectorAll('[data-film-chapter]')];
+  if (!chapters.length) return;
+  const images = [...document.querySelectorAll('[data-film-image]')];
+  const controls = [...document.querySelectorAll('[data-film-control]')];
+  const current = document.querySelector('#journey-film-current');
+  const kicker = document.querySelector('#journey-film-kicker');
+  const heading = document.querySelector('#journey-film-heading');
+  const text = document.querySelector('#journey-film-text');
+  const progress = document.querySelector('.journey-film-meter');
+  const meter = progress?.querySelector('span');
+  let active = -1;
+
+  const showChapter = (index) => {
+    index = Math.max(0, Math.min(index, chapters.length - 1));
+    if (index === active) return;
+    active = index;
+    const chapter = chapters[index];
+    chapters.forEach((item, i) => item.classList.toggle('is-active', i === index));
+    images.forEach((item, i) => item.classList.toggle('is-active', i === index));
+    controls.forEach((item, i) => {
+      item.classList.toggle('is-active', i === index);
+      item.setAttribute('aria-pressed', String(i === index));
+    });
+    if (current) current.textContent = String(index + 1).padStart(2, '0');
+    if (kicker) kicker.textContent = chapter.dataset.kicker || '';
+    if (heading) heading.textContent = chapter.dataset.heading || '';
+    if (text) text.textContent = chapter.dataset.text || '';
+    if (meter) meter.style.width = ((index + 1) / chapters.length * 100) + '%';
+    if (progress) {
+      progress.setAttribute('aria-valuenow', String(index + 1));
+      progress.setAttribute('aria-valuetext', 'Chapter ' + (index + 1) + ' of ' + chapters.length);
+    }
+  };
+
+  showChapter(0);
+  controls.forEach((button, index) => button.addEventListener('click', () => {
+    chapters[index].scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    showChapter(index);
+  }));
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      if (visible[0]) showChapter(chapters.indexOf(visible[0].target));
+    }, { threshold: [0.3, 0.55, 0.75], rootMargin: '-18% 0px -18% 0px' });
+    chapters.forEach(chapter => observer.observe(chapter));
+  }
+})();
