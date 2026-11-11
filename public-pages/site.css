@@ -308,3 +308,5 @@
 @media (max-width: 420px) {
   .navigation .brand img { width: 116px; }
 }
+
+.chat-messages p { white-space: pre-line; }

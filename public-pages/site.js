@@ -39,13 +39,34 @@ if (form) {
   });
 }
 
+const firstVisaEnquiry = 'First enquiry: send TripBhai your destination, visa type or reason for travel, nationality, country you are applying from, approximate dates, and contact details. Keep documents out of the chat and first message. If we need copies later, the team will confirm a secure way to share them.';
+
+const visaPreparation = [
+  'Common documents to prepare, depending on your case:',
+  '• Current passport, and previous visas or refusal letters if requested.',
+  '• Proof of lawful residence if applying from a country where you are not a citizen.',
+  '• Employment, study or business evidence, and financial or sponsor evidence.',
+  '• Planned itinerary, accommodation or host invitation, and travel insurance if required.',
+  '• For children, birth certificate and parental consent or custody evidence if requested.',
+  'The exact checklist depends on your destination, nationality, country of application and visa type. Follow the relevant visa authority’s official checklist for document formats, translations and originals.'
+].join('\n');
+
 function chatAnswer(question) {
   const text = question.toLowerCase();
-  if (/\b(contact|human|phone|email|whatsapp|call|agent|team)\b/.test(text)) {
-    return 'You can email tripbhaiofficial@gmail.com or call +44 7514 718031. Use the contact link below to prepare an enquiry.';
-  }
   if (/\b(?:uk|british|graduate)\s+(?:(?:student|visit|work|visitor|spouse)\s+)?(?:visa|immigration|settlement)\b|\b(?:visa|immigration)\b.*\b(?:to|for)\s+(?:the\s+)?uk\b|\b(?:ilr|psw)\b/.test(text)) {
     return 'TripBhai does not currently offer UK immigration advice. For a question about travelling from the UK to another country, tell our team your destination.';
+  }
+  if (/\b(document\w*|paperwork|checklist|bank statement\w*|payslip\w*|proof of funds|passport\w*|what (?:do|should) i (?:send|prepare)|what (?:to|can i) (?:send|upload))\b/.test(text) && !/\b(flight only|hotel only)\b/.test(text)) {
+    let route = '';
+    if (/\bireland\b/.test(text)) {
+      route = 'For Ireland, use the Irish Immigration Service Delivery checklist for your reason for travel.';
+    } else if (/\b(schengen|spain|france|italy|germany|greece|portugal|switzerland|netherlands)\b/.test(text)) {
+      route = 'For Schengen, check the destination consulate’s checklist for the country where you apply.';
+    }
+    return [firstVisaEnquiry, visaPreparation, route].filter(Boolean).join('\n\n');
+  }
+  if (/\b(contact|human|phone|email|whatsapp|call|agent|team)\b/.test(text)) {
+    return 'You can email tripbhaiofficial@gmail.com or call +44 7514 718031. Use the contact link below to prepare an enquiry.';
   }
   if (/\b(guarantee\w*|approved|approval\w*|success\w*|refus\w*|reject\w*)\b/.test(text)) {
     return 'Visa authorities decide each application. TripBhai cannot guarantee approval. For questions about your circumstances, contact the team below.';
