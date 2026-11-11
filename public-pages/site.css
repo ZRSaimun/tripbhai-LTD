@@ -281,3 +281,30 @@
 .chat-privacy, .chat-contact { margin: 0; padding: 0 14px 10px; }
 .chat-privacy { font-size: .75rem; }
 .chat-contact { font-weight: 700; }
+
+.header-actions { display: flex; align-items: center; gap: 10px; order: 1; }
+.header-chat {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+}
+.navigation:has(.header-actions) { gap: clamp(8px, 2vw, 25px); }
+.site-chat-inline { position: static; }
+.site-chat-inline .chat-panel {
+  position: static;
+  width: min(100%, 650px);
+  max-height: none;
+  margin-bottom: 18px;
+}
+.site-chat-inline .chat-messages { min-height: 10rem; max-height: 22rem; }
+.site-chat-inline .chat-contact { display: none; }
+.chat-page { padding-bottom: 45px; }
+@media (max-width: 420px) {
+  .navigation .brand img { width: 116px; }
+}

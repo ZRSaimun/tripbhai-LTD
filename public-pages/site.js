@@ -75,7 +75,7 @@ if (chat) {
 
   function showChat(open) {
     panel.hidden = !open;
-    toggle.setAttribute('aria-expanded', String(open));
+    toggle?.setAttribute('aria-expanded', String(open));
     (open ? input : toggle).focus();
   }
 
@@ -93,10 +93,10 @@ if (chat) {
     input.focus();
   }
 
-  toggle.addEventListener('click', () => showChat(panel.hidden));
-  chat.querySelector('.chat-close').addEventListener('click', () => showChat(false));
+  toggle?.addEventListener('click', () => showChat(panel.hidden));
+  chat.querySelector('.chat-close')?.addEventListener('click', () => showChat(false));
   chat.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && !panel.hidden) {
+    if (event.key === 'Escape' && toggle && !panel.hidden) {
       event.stopPropagation();
       showChat(false);
     }
@@ -108,5 +108,6 @@ if (chat) {
     event.preventDefault();
     reply(input.value);
   });
+  if (!toggle) panel.hidden = false;
   chat.hidden = false;
 }
