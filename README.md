@@ -37,3 +37,13 @@ The existing production site is served by the Sites/Cloudflare Worker environmen
 The GitHub Pages URL serves a static public marketing site with destination controls, service information, FAQs and team profiles. A dedicated visa services page is published at `/tripbhai-LTD/visa-services/`. It does not include the full application backend. Client login, enquiries and other backend-dependent actions link to the production site at [beyond-travel-portfolio.saintblue022.chatgpt.site](https://beyond-travel-portfolio.saintblue022.chatgpt.site). The app’s Worker, D1 and private R2 services cannot run on GitHub Pages. The workflow copies only the approved public image assets into `public-pages/`; it does not deploy application secrets or client records.
 
 To activate the URL, the repository’s Pages setting must use **GitHub Actions** as the source. If no Pages site is configured yet, an administrator must select that in repository **Settings → Pages → Build and deployment → Source**. The separate `tripbhai.co.uk` custom domain remains configured on the production Sites host.
+
+## Public website rebuild — 11 November 2026
+
+The public GitHub Pages website is an original, dependency-free eight-page implementation in `public-pages/`: Home, Our company, Visa enquiries, Travel planning, Our people, UK support, Visa stories and Contact. Its shared layout, CSS and JavaScript replace the former inline pages. The existing application and authenticated workflows remain separate.
+
+Edit approved company content in `scripts/build-public-site.py`, then run `python3 scripts/build-public-site.py`. Shared presentation and behaviour live in `public-pages/site.css` and `public-pages/site.js`. The Pages workflow copies the existing approved image assets. The contact form prepares a mailto message locally; it does not send mail or store submissions. The original consented gallery remains available.
+
+Validate with `python3 tests/public-site.test.py` after copying assets as in the Pages workflow, and `node --check public-pages/site.js`. Desktop/mobile visual testing was attempted but Chromium could not launch because this execution environment blocks its required socket operation; no visual acceptance is claimed.
+
+The custom domain returned HTTP 404 during this work. The separate Sites custom-domain records reported pending verification/SSL. Publishing the GitHub Pages source does not itself resolve that external domain mapping. This supersedes earlier statements that the domain is already live or that the public gallery contains no visa photographs.

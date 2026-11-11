@@ -36,6 +36,10 @@ jobs:
           cp public/images/*.jpg public-pages/assets/
           cp public/images/trip-bhai-logo.png public-pages/assets/
           cp public/favicon.svg public-pages/assets/
+      - name: Validate public pages
+        run: |
+          python3 tests/public-site.test.py
+          node --check public-pages/site.js
       - name: Upload the Pages site
         uses: actions/upload-pages-artifact@v3
         with:
