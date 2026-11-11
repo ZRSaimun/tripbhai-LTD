@@ -3,3 +3,100 @@
 @media(max-width:760px){.wrap{width:calc(100% - 36px)}.navigation{height:78px}.menu{display:block;background:transparent;border:1px solid var(--line);padding:9px 15px;color:var(--ink)}nav{display:none;position:absolute;top:78px;left:0;right:0;background:var(--paper);padding:20px;flex-direction:column;border-bottom:1px solid var(--line)}nav.open{display:flex}nav a{padding:7px}.hero{grid-template-columns:1fr;padding-top:15px;padding-bottom:35px}.hero h1{font-size:clamp(3.45rem,12vw,5.2rem)}.hero-copy{padding-bottom:0}.hero-image{height:450px;min-height:0}.hero-image img{border-radius:120px 120px 3px 3px}.image-stamp{right:10px}.bengali{margin-top:24px}.intro-strip .wrap{flex-wrap:wrap;gap:12px;font-size:.6rem;justify-content:flex-start}.section{padding-block:55px}.split,.editorial,.contact-grid{grid-template-columns:1fr;gap:30px}.section-title{display:block}.section-title>p{max-width:none}.people{grid-template-columns:1fr 1fr;gap:25px 18px}.monogram{height:110px}.person h3{font-size:1rem}.editorial img{height:340px}.steps{grid-template-columns:1fr;gap:20px}.steps span{margin-bottom:15px}.service-list>a{gap:18px}.service-list h3{font-size:1.6rem}.service-list p{font-size:.88rem}.cta{padding:35px 25px;display:block;margin-bottom:50px}.cta .button{margin-top:30px}.footer-top{grid-template-columns:1fr 1fr;gap:25px}.footer-top>div:first-child{grid-column:1/-1}.legal{display:block}.page-head{padding-top:45px;padding-bottom:40px}.page-head h1{font-size:3.5rem}.company-panel,.contact-grid form{padding:24px}.note{padding:24px;margin-bottom:35px}.lead{font-size:1.05rem}.actions{gap:18px}.utility{font-size:.58rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}.gallery figure{background:#e4eadf;padding:15px}.gallery img{width:100%;height:370px;object-fit:contain}.gallery figcaption{position:static;color:var(--ink);font: .85rem Arial,sans-serif;margin-top:16px}@media(max-width:760px){.gallery{grid-template-columns:1fr}.gallery img{height:auto;max-height:500px}}
+
+/* Visit visa homepage */
+.visa-hero {
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  padding-block: clamp(32px, 5vw, 72px);
+}
+
+.visa-hero h1 { font-size: clamp(3.5rem, 6.3vw, 6rem); }
+.visa-hero h1 em { color: var(--accent); }
+.visa-hero .eyebrow { margin-bottom: 18px; }
+.visa-hero .button, .visa-stories-feature .button { gap: 10px; }
+.visa-hero .button { background: var(--accent); border-color: var(--accent); }
+.visa-hero .button:hover { background: #81242d; }
+
+.visa-hero-image { min-height: 510px; }
+.visa-hero-image > img { border-radius: 44% 44% 14px 14px / 30% 30% 14px 14px; }
+.visa-hero-image::after { border-radius: 0 0 14px 14px; }
+.visa-hero-image figcaption { font-size: 1.25rem; }
+
+.visa-trust {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #eeefe7;
+}
+.visa-trust a { display: grid; gap: 3px; padding: 20px 24px; text-decoration: none; }
+.visa-trust a + a { border-left: 1px solid var(--line); }
+.visa-trust a:hover strong { text-decoration: underline; }
+.visa-trust span { color: var(--muted); font-size: .86rem; }
+
+.visa-process ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin: 32px 0 24px;
+  padding: 0;
+  list-style: none;
+  counter-reset: visa-step;
+}
+.visa-process li {
+  counter-increment: visa-step;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px;
+}
+.visa-process li::before {
+  content: counter(visa-step);
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: #f4e6e3;
+  color: #81242d;
+  font-weight: 700;
+}
+.visa-process li p, .visa-travel p { margin: 0; color: var(--muted); }
+
+.visa-stories-feature { background: var(--ink); color: var(--paper); }
+.visa-stories-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 6vw, 96px);
+  align-items: center;
+  padding-block: clamp(32px, 6vw, 80px);
+}
+.visa-stories-inner img { width: 100%; height: auto; aspect-ratio: 4 / 3; border-radius: 12px; }
+.visa-stories-inner p { max-width: 39ch; color: #dce7df; }
+.visa-stories-inner .button { color: var(--ink); background: var(--paper); border-color: var(--paper); }
+.visa-stories-inner .button:hover { background: var(--mint); }
+.visa-stories-inner .button:focus-visible, .visa-hero .button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -5px;
+}
+.visa-team .section-title h2 { margin-bottom: 0; }
+.visa-team .section-title a { display: inline-block; margin-top: 12px; }
+.visa-travel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-block: 1px solid var(--line);
+  padding-block: 24px;
+}
+.visa-travel h2 { font-size: 1.7rem; margin-bottom: 10px; }
+
+@media (max-width: 760px) {
+  .visa-hero, .visa-trust, .visa-process ol, .visa-stories-inner { grid-template-columns: 1fr; }
+  .visa-hero h1 { font-size: clamp(2.75rem, 9.5vw, 4.5rem); }
+  .visa-hero-image { height: clamp(250px, 62vw, 390px); min-height: 0; }
+  .visa-trust a + a { border-left: 0; border-top: 1px solid var(--line); }
+  .visa-stories-inner img { order: 1; }
+}
