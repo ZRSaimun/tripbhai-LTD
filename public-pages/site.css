@@ -348,3 +348,45 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;o
   .navigation nav{background:rgba(244,241,233,.97);backdrop-filter:blur(18px)}.page-head:after{right:-35%;top:-12%}.cta{border-radius:15px}.person{padding:9px 9px 18px}
 }
 @media(prefers-reduced-motion:reduce){.cinematic-reveal{opacity:1;transform:none}.hero-image>img,.visa-stories-scene img{transition:none}}
+
+
+/* Scroll-driven Trip Bhai journey film */
+.journey-film{background:#061719;color:#f5f2e9;padding-top:clamp(80px,10vw,150px);overflow:clip}
+.journey-film-intro{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:end;padding-bottom:65px}
+.journey-film-intro .eyebrow{grid-column:1/-1;color:#d9b06f;margin:0}
+.journey-film-intro h2{font-size:clamp(3.5rem,7vw,7.4rem);line-height:.88;margin:0;max-width:760px}
+.journey-film-intro h2 em{color:#ef6c57}
+.journey-film-intro>p:last-child{color:#aebfbc;max-width:520px;font-size:1.05rem;margin:0 0 8px}
+.journey-film-track{position:relative}
+.journey-film-stage{position:sticky;top:0;height:100svh;min-height:680px;display:grid;align-items:end;overflow:hidden;z-index:1}
+.journey-film-visual,.journey-film-image,.journey-film-shade{position:absolute;inset:0;width:100%;height:100%}
+.journey-film-image{object-fit:cover;opacity:0;transform:scale(1.09);filter:saturate(.72) contrast(1.12);transition:opacity 1s ease,transform 1.8s cubic-bezier(.2,.7,.2,1)}
+.journey-film-image.is-active{opacity:1;transform:scale(1.02)}
+.journey-film-shade{background:linear-gradient(90deg,rgba(3,17,19,.94) 0%,rgba(3,17,19,.72) 42%,rgba(3,17,19,.16) 78%),linear-gradient(0deg,rgba(3,17,19,.92),transparent 55%)}
+.journey-film-copy{position:relative;z-index:2;width:min(1240px,calc(100% - 80px));margin:0 auto;padding-bottom:clamp(70px,10vh,125px);max-width:none}
+.journey-film-count{font:italic clamp(2.2rem,5vw,4.8rem)/1 var(--serif);color:#d9b06f;margin-bottom:32px}
+.journey-film-count span{color:#fff}
+.journey-film-kicker{font-size:.68rem;letter-spacing:.2em;font-weight:700;color:#ef8a73;margin-bottom:18px}
+.journey-film-copy h3{font:500 clamp(2.8rem,6vw,6.4rem)/.96 var(--serif);letter-spacing:-.045em;max-width:870px;margin:0 0 22px;text-wrap:balance}
+.journey-film-copy>p:not(.journey-film-count):not(.journey-film-kicker){max-width:590px;color:#cad5d2;font-size:clamp(1rem,1.4vw,1.18rem)}
+.journey-film-meter{height:2px;background:rgba(255,255,255,.22);max-width:590px;margin-top:30px}
+.journey-film-meter span{display:block;width:25%;height:100%;background:#ef6c57;transition:width .55s cubic-bezier(.2,.7,.2,1);box-shadow:0 0 16px rgba(239,108,87,.65)}
+.journey-film-controls{display:flex;gap:8px;margin-top:22px}
+.journey-film-controls button{width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.32);background:rgba(5,22,24,.38);color:#fff;font-size:.72rem;transition:background .25s,border-color .25s,transform .25s}
+.journey-film-controls button:hover,.journey-film-controls button.is-active{background:#ef6c57;border-color:#ef6c57;transform:translateY(-2px)}
+.journey-film-chapters{position:relative;z-index:2;list-style:none;padding-top:42vh;padding-bottom:45vh;margin-top:0;pointer-events:none}
+.journey-film-chapters li{min-height:58vh;width:min(470px,46%);margin-left:auto;display:flex;gap:24px;align-items:flex-start;padding:26px;background:rgba(5,24,26,.76);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(16px);border-radius:16px;opacity:.42;transform:translateX(24px);transition:opacity .45s,transform .45s,border-color .45s;pointer-events:auto}
+.journey-film-chapters li+li{margin-top:28vh}
+.journey-film-chapters li.is-active{opacity:1;transform:none;border-color:rgba(239,108,87,.68)}
+.journey-film-chapters li>span{font:italic 2rem/1 var(--serif);color:#d9b06f}
+.journey-film-chapters h3{font:500 1.8rem/1.1 var(--serif);margin-bottom:12px}
+.journey-film-chapters p{font-size:.9rem;color:#b8c8c4;margin:0}
+@media(max-width:760px){
+ .journey-film-intro{grid-template-columns:1fr;gap:24px;padding-bottom:50px}.journey-film-intro .eyebrow{grid-column:auto}
+ .journey-film-intro h2{font-size:clamp(3.4rem,14vw,5.5rem)}
+ .journey-film-stage{min-height:650px}.journey-film-copy{width:calc(100% - 36px);padding-bottom:55px}
+ .journey-film-copy h3{font-size:clamp(2.7rem,11vw,4rem)}.journey-film-shade{background:linear-gradient(0deg,rgba(3,17,19,.96) 0%,rgba(3,17,19,.66) 68%,rgba(3,17,19,.2))}
+ .journey-film-chapters{padding-top:50vh;padding-bottom:38vh}.journey-film-chapters li{width:100%;min-height:42vh;margin-left:0;padding:20px}
+ .journey-film-chapters li+li{margin-top:28vh}.journey-film-controls button{width:44px;height:44px}
+}
+@media(prefers-reduced-motion:reduce){.journey-film-image,.journey-film-chapters li,.journey-film-meter span{transition:none}}
