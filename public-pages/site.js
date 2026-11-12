@@ -218,3 +218,63 @@ if (chat) {
     chapters.forEach(chapter => observer.observe(chapter));
   }
 })();
+
+
+/* Accessible full-page viewer for the supplied Visa Stories archive */
+(() => {
+  const openers = [...document.querySelectorAll('[data-archive-open]')];
+  const dialog = document.querySelector('#archiveLightbox');
+  if (!openers.length || !dialog) return;
+
+  const image = dialog.querySelector('#archiveLightboxImage');
+  const title = dialog.querySelector('#archiveLightboxTitle');
+  const category = dialog.querySelector('#archiveLightboxCategory');
+  const status = dialog.querySelector('#archiveLightboxStatus');
+  const position = dialog.querySelector('[data-archive-position]');
+  const previous = dialog.querySelector('[data-archive-prev]');
+  const next = dialog.querySelector('[data-archive-next]');
+  const close = dialog.querySelector('.archive-lightbox-close');
+  let activeIndex = 0;
+  let returnFocus = null;
+
+  const render = (index) => {
+    activeIndex = (index + openers.length) % openers.length;
+    const source = openers[activeIndex];
+    image.src = source.dataset.fullSrc;
+    image.alt = source.querySelector('img')?.alt || source.dataset.title || 'Visa story image';
+    title.textContent = source.dataset.title || 'Visa story';
+    category.textContent = source.dataset.category || 'VISA STORY';
+    status.textContent = 'Complete image shown as supplied; no part of the page is cropped.';
+    position.textContent = 'Image ' + (activeIndex + 1) + ' of ' + openers.length;
+    previous.disabled = activeIndex === 0;
+    next.disabled = activeIndex === openers.length - 1;
+  };
+
+  openers.forEach((button, index) => button.addEventListener('click', () => {
+    returnFocus = button;
+    render(index);
+    dialog.showModal();
+    close.focus();
+  }));
+
+  previous.addEventListener('click', () => {
+    if (activeIndex > 0) render(activeIndex - 1);
+  });
+  next.addEventListener('click', () => {
+    if (activeIndex < openers.length - 1) render(activeIndex + 1);
+  });
+  close.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  dialog.addEventListener('close', () => returnFocus?.focus());
+  dialog.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft' && activeIndex > 0) {
+      event.preventDefault();
+      render(activeIndex - 1);
+    } else if (event.key === 'ArrowRight' && activeIndex < openers.length - 1) {
+      event.preventDefault();
+      render(activeIndex + 1);
+    }
+  });
+})();
