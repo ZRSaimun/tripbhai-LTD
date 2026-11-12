@@ -193,7 +193,7 @@ gallery = '''<section id="visa-gallery" class="wrap section visa-gallery" aria-l
       <figure class="archive-lightbox-figure"><img id="archiveLightboxImage" alt=""><figcaption id="archiveLightboxStatus" aria-live="polite"></figcaption></figure>
       <nav class="archive-lightbox-controls" aria-label="Visa story images">
         <button type="button" data-archive-prev aria-label="Previous image">← <span>Previous</span></button>
-        <span data-archive-position>Image 1 of 9</span>
+        <span data-archive-position>Image viewer</span>
         <button type="button" data-archive-next aria-label="Next image"><span>Next</span> →</button>
       </nav>
     </div>
