@@ -456,3 +456,35 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;o
     min-height: 44px;
   }
 }
+
+.visa-hero .hero-copy h1 {
+  font-size: clamp(2.7rem, 5.5vw, 5.4rem);
+  max-width: 15ch;
+}
+.visa-hero + .visa-trust { margin-bottom: clamp(28px, 5vw, 72px); }
+.person .person-responsibility { margin-top: 8px; color: var(--muted); }
+.visa-plan-preview {
+  position: absolute;
+  top: 19%;
+  right: max(5vw, 24px);
+  width: min(36%, 310px);
+  display: grid;
+  gap: 8px;
+}
+.visa-plan-sheet {
+  background: var(--paper);
+  color: var(--ink);
+  border-left: 4px solid var(--accent);
+  padding: 11px 14px;
+  opacity: 0;
+  transform: translateY(-16px);
+  transition: opacity .35s ease, transform .35s ease;
+  font-weight: 700;
+}
+.visa-plan-sheet.is-assembled { opacity: 1; transform: none; }
+@media (max-width: 760px), (max-height: 650px) {
+  .visa-plan-preview { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .visa-plan-sheet { transition: none; }
+}

@@ -199,6 +199,7 @@ if (chat) {
   const chapters = [...document.querySelectorAll('[data-film-chapter]')];
   if (!chapters.length) return;
   const images = [...document.querySelectorAll('[data-film-image]')];
+  const planSheets = [...document.querySelectorAll('.visa-plan-sheet')];
   const controls = [...document.querySelectorAll('[data-film-control]')];
   const current = document.querySelector('#journey-film-current');
   const kicker = document.querySelector('#journey-film-kicker');
@@ -215,6 +216,7 @@ if (chat) {
     const chapter = chapters[index];
     chapters.forEach((item, i) => item.classList.toggle('is-active', i === index));
     images.forEach((item, i) => item.classList.toggle('is-active', i === index));
+    planSheets.forEach((item, i) => item.classList.toggle('is-assembled', i <= index));
     controls.forEach((item, i) => {
       item.classList.toggle('is-active', i === index);
       item.setAttribute('aria-pressed', String(i === index));

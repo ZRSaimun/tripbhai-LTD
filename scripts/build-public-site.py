@@ -36,8 +36,15 @@ def link(path, label, cls='button', prefix=''):
     return f'<a class="{cls}" href="{prefix}{path}/">{label}</a>'
 def heading(kicker,title,description):
     return f'<section class="page-head wrap"><p class="eyebrow">{kicker}</p><h1>{title}</h1><p class="lead">{description}</p></section>'
+TEAM_RESPONSIBILITIES = {
+    'ZR': 'Company direction and service development',
+    'RF': 'Dubai operations and client enquiries',
+    'US': 'Client communication and follow-up',
+    'AA': 'UK operations and technology',
+}
+
 def people():
-    return '<div class="people">'+''.join(f'<article class="person"><span class="monogram" aria-hidden="true">{i}</span><h3>{n}</h3><p>{r}</p></article>' for n,r,i in TEAM)+'</div>'
+    return '<div class="people">'+''.join(f'<article class="person"><span class="monogram" aria-hidden="true">{i}</span><h3>{n}</h3><p>{r}</p><p class="person-responsibility">{TEAM_RESPONSIBILITIES[i]}</p></article>' for n,r,i in TEAM)+'</div>'
 def cta(p):
     return f'<section class="wrap"><div class="cta"><div><p class="eyebrow">LET’S TALK ABOUT YOUR PLANS</p><h2>Your next journey<br>starts here.</h2></div>{link("contact","Talk to Trip Bhai ↗",prefix=p)}</div></section>'
 def chat_widget(prefix, inline=False):
@@ -76,13 +83,11 @@ def page(slug,title,desc,body):
 p='./'
 home='''<section class="hero wrap visa-hero">
   <div class="hero-copy">
-    <p class="eyebrow">VISIT VISA SUPPORT FROM LONDON</p>
-    <h1>Planning a trip?<br><em>Let’s talk visas.</em></h1>
-    <p class="lead">Whether you’re visiting family or taking a holiday, tell us where you’re going and what you need help with. A member of our team will explain the support we can offer and what to do next.</p>
+    <h1>Visit visa support<br><em>from a London-based team.</em></h1>
+    <p class="lead">Planning a holiday or visiting family? Tell us where you’re going and when. We’ll explain what help we can offer, what to prepare and what it costs.</p>
     <div class="actions">
       <a class="button" href="./contact/?service=Visit%20visa%20enquiry">Start a visa enquiry <span aria-hidden="true">↗</span></a>
-      <a class="text-link" href="./chat/">Ask the chatbot →</a>
-      <a class="button secondary" href="./visa-successes/">Explore visa stories <span aria-hidden="true">→</span></a>
+      <a class="button secondary" href="./visa-successes/">See visa stories <span aria-hidden="true">→</span></a>
     </div>
   </div>
   <figure class="hero-image visa-hero-image">
@@ -90,11 +95,16 @@ home='''<section class="hero wrap visa-hero">
     <figcaption>Positano, Italy</figcaption>
   </figure>
 </section>
+<section class="wrap visa-trust" aria-label="Get to know Trip Bhai">
+  <a href="./about/"><strong>London-based travel agency</strong><span>Trip Bhai Ltd · Company no. 16286072</span></a>
+  <a href="./team/"><strong>Speak with a real person</strong><span>Meet the team behind your enquiry</span></a>
+  <a href="tel:+447514718031"><strong>Prefer to talk?</strong><span>Call +44 7514 718031</span></a>
+</section>
 '''+visa_stories_feature(on_home=True)+'''<section class="journey-film" id="journey-film" aria-labelledby="journey-film-title">
   <div class="journey-film-intro wrap">
-    <p class="eyebrow">YOUR JOURNEY · FOUR CHAPTERS</p>
-    <h2 id="journey-film-title">From “one day”<br><em>to departure day.</em></h2>
-    <p>Scroll through a simple travel journey. Every plan is different; Trip Bhai starts with a conversation and keeps each next step clear.</p>
+    <p class="eyebrow">HOW WE HELP</p>
+    <h2 id="journey-film-title">From first enquiry<br><em>to a clearer visa plan.</em></h2>
+    <p>See what happens as you go from telling us about your trip to preparing your documents.</p>
   </div>
   <div class="journey-film-track">
     <div class="journey-film-stage">
@@ -102,35 +112,32 @@ home='''<section class="hero wrap visa-hero">
         <img class="journey-film-image is-active" data-film-image="0" src="./assets/amalfi.jpg" alt="">
         <img class="journey-film-image" data-film-image="1" src="./assets/cappadocia.jpg" alt="">
         <img class="journey-film-image" data-film-image="2" src="./assets/london.jpg" alt="">
-        <img class="journey-film-image" data-film-image="3" src="./assets/amalfi.jpg" alt="">
         <div class="journey-film-shade"></div>
+        <div class="visa-plan-preview">
+          <div class="visa-plan-sheet">Trip details</div>
+          <div class="visa-plan-sheet">Document checklist</div>
+          <div class="visa-plan-sheet">Application preparation</div>
+        </div>
       </div>
       <div class="journey-film-copy">
-        <p class="journey-film-count"><span id="journey-film-current">01</span> / 04</p>
-        <p class="journey-film-kicker" id="journey-film-kicker">THE IDEA</p>
-        <h3 id="journey-film-heading">Choose the feeling before the flight.</h3>
-        <p id="journey-film-text">A family visit, a city break or somewhere completely new—start with where you want to go and why.</p>
-        <div class="journey-film-meter" role="progressbar" aria-label="Journey chapter" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1"><span></span></div>
+        <p class="journey-film-count"><span id="journey-film-current">01</span> / 03</p>
+        <p class="journey-film-kicker" id="journey-film-kicker">YOUR TRIP</p>
+        <h3 id="journey-film-heading">Tell us your travel plans.</h3>
+        <p id="journey-film-text">Share your destination, travel dates and purpose of travel.</p>
+        <div class="journey-film-meter" role="progressbar" aria-label="Journey chapter" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1"><span></span></div>
         <div class="journey-film-controls" aria-label="Choose a journey chapter">
-          <button class="is-active" type="button" data-film-control="0" aria-label="Chapter 1: The idea">01</button>
-          <button type="button" data-film-control="1" aria-label="Chapter 2: The visa plan">02</button>
-          <button type="button" data-film-control="2" aria-label="Chapter 3: Flights and stays">03</button>
-          <button type="button" data-film-control="3" aria-label="Chapter 4: Departure">04</button>
+          <button class="is-active" type="button" data-film-control="0" aria-label="Chapter 1: Your trip">01</button>
+          <button type="button" data-film-control="1" aria-label="Chapter 2: Your checklist">02</button>
+          <button type="button" data-film-control="2" aria-label="Chapter 3: Prepare your documents">03</button>
         </div>
       </div>
     </div>
     <ol class="journey-film-chapters wrap">
-      <li class="is-active" data-film-chapter="0" data-kicker="THE IDEA" data-heading="Choose the feeling before the flight." data-text="A family visit, a city break or somewhere completely new—start with where you want to go and why."><span>01</span><div><h3>Imagine the trip</h3><p>Tell us the destination, purpose and people travelling.</p></div></li>
-      <li data-film-chapter="1" data-kicker="THE VISA PLAN" data-heading="Turn questions into a clear checklist." data-text="We discuss the destination and the support available, then explain what to prepare before any application step."><span>02</span><div><h3>Prepare with clarity</h3><p>Understand the scope, documents and next step.</p></div></li>
-      <li data-film-chapter="2" data-kicker="FLIGHTS & STAYS" data-heading="Build the journey around real life." data-text="Share your route, dates, budget and preferences so the travel team can discuss suitable options with you."><span>03</span><div><h3>Shape the itinerary</h3><p>Bring flights, stays and travel preferences together.</p></div></li>
-      <li data-film-chapter="3" data-kicker="DEPARTURE" data-heading="Leave with the details in place." data-text="Before you travel, check every booking and requirement yourself. Then the planning gives way to the experience."><span>04</span><div><h3>Begin the journey</h3><p>Review, confirm and get ready to go.</p></div></li>
+      <li class="is-active" data-film-chapter="0" data-kicker="YOUR TRIP" data-heading="Tell us your travel plans." data-text="Share your destination, travel dates and purpose of travel."><span>01</span><div><h3>Tell us your plans</h3><p>Tell us the destination, purpose and people travelling.</p></div></li>
+      <li data-film-chapter="1" data-kicker="THE VISA PLAN" data-heading="Get a tailored checklist." data-text="We discuss the destination and the support available, then explain what to prepare before any application step."><span>02</span><div><h3>Get a tailored checklist</h3><p>Understand the scope, documents and next step.</p></div></li>
+      <li data-film-chapter="2" data-kicker="YOUR DOCUMENTS" data-heading="Prepare your application documents." data-text="Use the destination’s official requirements and the agreed checklist to organise your documents."><span>03</span><div><h3>Prepare your documents</h3><p>We explain how to share any documents securely.</p></div></li>
     </ol>
   </div>
-</section>
-<section class="wrap visa-trust" aria-label="Get to know Trip Bhai">
-  <a href="./about/"><strong>London-based travel agency</strong><span>Trip Bhai Ltd · Company no. 16286072</span></a>
-  <a href="./team/"><strong>Speak with a real person</strong><span>Meet the team behind your enquiry</span></a>
-  <a href="tel:+447514718031"><strong>Prefer to talk?</strong><span>Call +44 7514 718031</span></a>
 </section>
 <section class="section wrap visa-process" aria-labelledby="visa-process-title">
   <h2 id="visa-process-title">What happens after <em>you enquire?</em></h2>
@@ -210,7 +217,7 @@ gallery = '''<section id="visa-gallery" class="wrap section visa-gallery" aria-l
   </dialog>
 </section>'''
 page('visa-successes','Visa stories','Explore Trip Bhai’s archive of historical Schengen and UK student visa examples and travel photographs.',visa_stories_feature(on_home=False)+gallery)
-page('contact','Contact Trip Bhai','Email or call Trip Bhai, or prepare a travel enquiry. tripbhaiofficial@gmail.com · +44 7514 718031.',heading('CONTACT TRIP BHAI','Where would you<br><em>like to go?</em>','A few details are all we need to start the conversation. Please keep passports and financial documents out of your initial message.')+'''<section class="wrap section contact-grid"><aside><p class="eyebrow">SPEAK WITH OUR TEAM</p><h2>Let’s make<br><em>a start.</em></h2><a class="contact-link" href="mailto:tripbhaiofficial@gmail.com">tripbhaiofficial@gmail.com</a><a class="contact-link" href="tel:+447514718031">+44 7514 718031</a><p lang="bn">আপনার গন্তব্য ও ভ্রমণের পরিকল্পনা আমাদের জানান।</p><hr><h3>Already a client?</h3><p>Use the existing client portal for your account.</p><a class="text-link" href="'''+PORTAL+'''/client-login">Open client portal ↗</a><h3>Visits by arrangement</h3><p>Please confirm an appointment and meeting location with the team before travelling.</p></aside><form id="enquiry"><h2>Prepare your enquiry</h2><p>This form prepares an email on your device. You review and send it from your email app; nothing is submitted automatically.</p><label for="name">Your name</label><input id="name" name="name" autocomplete="name" required maxlength="100"><label for="email">Your email</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="200"><label for="service">How can we help?</label><select id="service" name="service"><option>Visit visa enquiry</option><option>Flights and travel</option><option>Hotels and holidays</option><option>General enquiry</option></select><label for="destination">Destination</label><input id="destination" name="destination" required maxlength="100" placeholder="For example, Italy"><label for="dates">Approximate travel dates (optional)</label><input id="dates" name="dates" maxlength="100" placeholder="For example, March 2027"><label for="message">Tell us a little more (optional)</label><textarea id="message" name="message" rows="4" maxlength="2000"></textarea><button class="button" type="submit">Prepare my email ↗</button><p id="email-status" role="status"></p><div id="email-preview" hidden><label for="prepared">Your prepared message</label><textarea id="prepared" rows="10" readonly></textarea><div class="actions"><a id="email-open" class="button">Open email app ↗</a><button id="copy-email" type="button" class="secondary">Copy message</button></div><p>Send to <strong>tripbhaiofficial@gmail.com</strong>. Your enquiry has not been sent yet.</p></div><noscript><p>Please email tripbhaiofficial@gmail.com or call +44 7514 718031 to start your enquiry.</p></noscript></form></section>''')
+page('contact','Contact Trip Bhai','Email or call Trip Bhai, or prepare a travel enquiry. tripbhaiofficial@gmail.com · +44 7514 718031.',heading('CONTACT TRIP BHAI','Where would you<br><em>like to go?</em>','A few details are all we need to start the conversation. Please keep passports and financial documents out of your initial message.')+'''<section class="wrap section contact-grid"><aside><p class="eyebrow">SPEAK WITH OUR TEAM</p><h2>Let’s make<br><em>a start.</em></h2><a class="contact-link" href="mailto:tripbhaiofficial@gmail.com">tripbhaiofficial@gmail.com</a><a class="contact-link" href="tel:+447514718031">+44 7514 718031</a><p lang="bn">আপনার গন্তব্য ও ভ্রমণের পরিকল্পনা আমাদের জানান।</p><hr><h3>Already a client?</h3><p>Use the existing client portal for your account.</p><a class="text-link" href="'''+PORTAL+'''/client-login">Open client portal ↗</a><h3>Visits by arrangement</h3><p>Please confirm an appointment and meeting location with the team before travelling.</p></aside><form id="enquiry"><h2>Start your enquiry</h2><p>Enter your trip details, then review and send the prepared email; nothing is submitted automatically.</p><label for="name">Your name</label><input id="name" name="name" autocomplete="name" required maxlength="100"><label for="email">Your email</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="200"><label for="service">How can we help?</label><select id="service" name="service"><option>Visit visa enquiry</option><option>Flights and travel</option><option>Hotels and holidays</option><option>General enquiry</option></select><label for="destination">Destination</label><input id="destination" name="destination" required maxlength="100" placeholder="For example, Italy"><label for="dates">Approximate travel dates (optional)</label><input id="dates" name="dates" maxlength="100" placeholder="For example, March 2027"><label for="message">Tell us a little more (optional)</label><textarea id="message" name="message" rows="4" maxlength="2000"></textarea><button class="button" type="submit">Prepare my email ↗</button><p id="email-status" role="status"></p><div id="email-preview" hidden><label for="prepared">Your prepared message</label><textarea id="prepared" rows="10" readonly></textarea><div class="actions"><a id="email-open" class="button">Open email app ↗</a><button id="copy-email" type="button" class="secondary">Copy message</button></div><p>Send to <strong>tripbhaiofficial@gmail.com</strong>. Your enquiry has not been sent yet.</p></div><noscript><p>Please email tripbhaiofficial@gmail.com or call +44 7514 718031 to start your enquiry.</p></noscript></form></section>''')
 page('privacy-terms','Privacy & service terms','How Trip Bhai handles website enquiries and personal information, and the terms on which travel and visa enquiry services are offered.',heading('PRIVACY & SERVICE TERMS','Plain information.<br><em>No small print.</em>','How this website works with your information, and what you can expect when you make an enquiry with TRIP BHAI LTD.')+'''<section class="wrap section split"><div><h2>Privacy on<br><em>this website.</em></h2><p>This public website is a set of static pages. It does not set tracking cookies, run analytics scripts or save your enquiry or chat messages. The automated chat processes questions on your device, and closing or reloading the page clears the conversation.</p><p>The enquiry form on our contact page does not send anything by itself. It prepares a message on your device which you review and send from your own email app to tripbhaiofficial@gmail.com. Until you send that email, we receive nothing.</p><p>When you email or call us, we use your contact details and the travel details you share to respond to your enquiry and, if you go ahead, to provide the agreed service. We ask you not to send passport scans, bank statements or other sensitive documents in a first enquiry. Sensitive documents are only requested through the separate client portal, which has its own privacy information.</p><p>You can ask us at any time what information we hold about you, ask us to correct it or ask us to delete it, subject to any records we must keep. Email <a href="mailto:tripbhaiofficial@gmail.com">tripbhaiofficial@gmail.com</a>.</p></div><div class="company-panel"><p class="eyebrow">DATA CONTROLLER</p><dl><dt>Company</dt><dd>TRIP BHAI LTD</dd><dt>Company number</dt><dd>16286072</dd><dt>Registered office</dt><dd>53 Blenheim Road, London, England, E6 3EG</dd><dt>Contact</dt><dd><a href="mailto:tripbhaiofficial@gmail.com">tripbhaiofficial@gmail.com</a><br><a href="tel:+447514718031">+44 7514 718031</a></dd></dl><p>Client portal users should also read the portal’s own <a href="'''+PORTAL+'''/privacy">privacy information ↗</a> and <a href="'''+PORTAL+'''/terms">service terms ↗</a>.</p></div></section><section class="wrap section"><h2>Service terms<br><em>in brief.</em></h2><div class="steps"><article><span>01</span><h3>An enquiry is not a booking</h3><p>Sending us an enquiry does not reserve a flight, hotel or holiday and is not an application to any embassy, consulate or government authority. We confirm availability, prices, supplier terms and next steps separately, in writing.</p></article><article><span>02</span><h3>Scope and cost agreed first</h3><p>Before any paid work begins we confirm what the service includes, what it does not include and the fee. No fee, processing time or timescale is promised on this website.</p></article><article><span>03</span><h3>No guaranteed outcomes</h3><p>Visa decisions are made by the relevant authorities. We cannot guarantee an approval, and a past approval shown on our visa stories page is not a prediction for anyone else’s application.</p></article><article><span>04</span><h3>UK immigration advice</h3><p>UK immigration advice, choosing an application form and representation are not offered through this website. See our <a href="../uk-support/">service availability page</a>. Practical orientation support, where offered, is not legal advice, therapy or crisis support.</p></article><article><span>05</span><h3>Photographs and stories</h3><p>Client photographs are published only with the client’s permission. To withdraw a photograph or story, email us and we will remove it from the public site.</p></article><article><span>06</span><h3>Changes</h3><p>We may update this page as our services change. The version published on this website is the current one. Last reviewed: November 2026.</p></article></div></section>''')
 page('chat', 'Chat with TripBhai', 'Get instant answers about visit visas, flights and hotels.', heading('INSTANT HELP', 'Chat with TripBhai', 'Type a question or choose a topic to get an automated reply.') + '<section class="wrap chat-page">' + chat_widget('../', inline=True) + '<p><a href="../contact/">Contact the TripBhai team</a> or call <a href="tel:+447514718031">+44 7514 718031</a>.</p></section>')
 (OUT/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join('<url><loc>https://tripbhai.co.uk/'+s+'</loc></url>' for s in ['', 'about/','team/','visa-services/','flights-travel/','uk-support/','visa-successes/','contact/','chat/','privacy-terms/'])+'</urlset>')
