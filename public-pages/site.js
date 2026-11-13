@@ -193,6 +193,31 @@ if (chat) {
   }
 })();
 
+/* Gentle pointer-controlled depth for the hero scene; touch and reduced-motion stay still. */
+(() => {
+  const scene = document.querySelector('[data-tilt-scene]');
+  if (!scene || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  const layers = [...scene.querySelectorAll('[data-tilt-layer]')];
+  let frame = 0;
+  scene.addEventListener('pointermove', (event) => {
+    const rect = scene.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - .5;
+    const y = (event.clientY - rect.top) / rect.height - .5;
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      layers.forEach((layer) => {
+        const amount = Number(layer.dataset.tiltLayer || 12);
+        layer.style.transform = `rotate(${layer.classList.contains('scene-passport') ? -12 : 14}deg) translate3d(${x * amount}px, ${y * amount}px, ${amount * 3}px)`;
+      });
+    });
+  });
+  scene.addEventListener('pointerleave', () => {
+    layers.forEach((layer) => {
+      layer.style.transform = layer.classList.contains('scene-passport') ? 'rotate(-12deg) translateZ(72px)' : 'rotate(14deg) translateZ(90px)';
+    });
+  });
+})();
+
 
 /* Trip Bhai journey film */
 (() => {
