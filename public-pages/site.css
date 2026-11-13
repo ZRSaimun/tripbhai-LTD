@@ -488,3 +488,34 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;o
 @media (prefers-reduced-motion: reduce) {
   .visa-plan-sheet { transition: none; }
 }
+
+/* Cinematic 3D hero: depth layers remain decorative, while the real CTA and image stay usable. */
+.cinematic-hero-scene { perspective: 1200px; transform-style: preserve-3d; overflow: visible; isolation: isolate; }
+.cinematic-hero-scene > img { transform: translateZ(0); transition: transform .8s cubic-bezier(.2,.7,.2,1), filter .8s ease; filter: saturate(.92) contrast(1.04); }
+.cinematic-hero-scene::before { content:''; position:absolute; z-index:1; inset:0; border:1px solid rgba(255,255,255,.32); border-radius:44% 44% 14px 14px / 30% 30% 14px 14px; box-shadow: inset 0 0 70px rgba(5,25,27,.2), 0 35px 80px rgba(18,45,48,.18); pointer-events:none; }
+.cinematic-hero-scene::after { z-index:2; }
+.scene-orbit { position:absolute; z-index:3; left:-13%; top:14%; width:128%; height:72%; border:1px solid rgba(244,216,164,.52); border-radius:50%; transform:rotate(-21deg) translateZ(32px); pointer-events:none; }
+.scene-orbit-two { left:-6%; top:25%; width:114%; height:59%; border-color:rgba(255,255,255,.35); transform:rotate(36deg) translateZ(48px); }
+.scene-glow { position:absolute; z-index:1; width:180px; height:180px; border-radius:50%; background:#f4d8a4; filter:blur(50px); opacity:.2; pointer-events:none; }
+.scene-glow-one { right:-40px; top:6%; }
+.scene-glow-two { left:-45px; bottom:3%; background:#ef6c57; opacity:.12; }
+.scene-passport { position:absolute; z-index:4; left:-8%; bottom:13%; width:205px; aspect-ratio:1.42; padding:19px; display:flex; flex-direction:column; justify-content:space-between; color:#f8eedc; background:linear-gradient(140deg,#163e40,#092326 70%); border:1px solid rgba(244,216,164,.65); border-radius:9px 13px 13px 9px; box-shadow:16px 25px 40px rgba(4,22,24,.38), inset 0 0 30px rgba(255,255,255,.07); transform:rotate(-12deg) translateZ(72px); transform-style:preserve-3d; transition:transform .25s ease-out; pointer-events:none; }
+.scene-passport strong { font-size:.72rem; letter-spacing:.2em; }
+.scene-passport small { font-size:.48rem; letter-spacing:.1em; color:#d9b06f; }
+.passport-chip { width:26px; height:20px; border:1px solid #d9b06f; border-radius:4px; opacity:.8; }
+.scene-passport i { display:block; width:100%; height:1px; background:rgba(244,216,164,.4); }
+.scene-stamp { position:absolute; z-index:4; right:-7%; top:19%; display:grid; place-items:center; width:112px; height:112px; border:2px dashed #f4d8a4; border-radius:50%; color:#f4d8a4; font:700 .66rem/1.35 Arial,sans-serif; letter-spacing:.12em; text-align:center; transform:rotate(14deg) translateZ(90px); transition:transform .25s ease-out; pointer-events:none; }
+.scene-stamp span { font-size:.52rem; color:#fff; }
+@media (hover:hover) and (pointer:fine) {
+  .cinematic-hero-scene:hover > img { filter:saturate(1.03) contrast(1.06); }
+}
+@media (max-width:760px) {
+  .scene-passport { left:3%; bottom:9%; width:150px; padding:13px; }
+  .scene-stamp { right:2%; top:12%; width:82px; height:82px; font-size:.55rem; }
+  .scene-orbit { left:-20%; width:140%; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .cinematic-hero-scene > img,.scene-passport,.scene-stamp { transition:none; }
+  .scene-orbit { transform:rotate(-21deg); }
+  .scene-orbit-two { transform:rotate(36deg); }
+}
