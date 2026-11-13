@@ -59,7 +59,7 @@ export default {
       return json({ error: 'no question' }, 400, cors);
     }
 
-    const api = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`;
+    const api = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
     const payload = {
       systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
       contents,
@@ -69,7 +69,10 @@ export default {
     try {
       const upstream = await fetch(api, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-goog-api-key': env.GEMINI_API_KEY,
+        },
         body: JSON.stringify(payload),
       });
       if (!upstream.ok) return json({ error: 'upstream ' + upstream.status }, 502, cors);
