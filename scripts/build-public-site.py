@@ -90,8 +90,14 @@ home='''<section class="hero wrap visa-hero">
       <a class="button secondary" href="./visa-successes/">See visa stories <span aria-hidden="true">→</span></a>
     </div>
   </div>
-  <figure class="hero-image visa-hero-image">
+  <figure class="hero-image visa-hero-image cinematic-hero-scene" data-tilt-scene>
     <img src="./assets/amalfi.jpg" alt="Coastal buildings in Positano, Italy" fetchpriority="high" width="960" height="1200">
+    <span class="scene-orbit scene-orbit-one" aria-hidden="true"></span>
+    <span class="scene-orbit scene-orbit-two" aria-hidden="true"></span>
+    <span class="scene-glow scene-glow-one" aria-hidden="true"></span>
+    <span class="scene-glow scene-glow-two" aria-hidden="true"></span>
+    <div class="scene-passport" aria-hidden="true" data-tilt-layer="18"><span class="passport-chip"></span><strong>TRIP BHAI</strong><small>VISA STORIES · LONDON</small><i></i></div>
+    <div class="scene-stamp" aria-hidden="true" data-tilt-layer="28">READY<br><span>TO GO</span></div>
     <figcaption>Positano, Italy</figcaption>
   </figure>
 </section>
