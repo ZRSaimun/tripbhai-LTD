@@ -67,7 +67,7 @@ export default {
 
     // Try several models in order; a single overloaded model (503) shouldn't
     // block the chat. Stop early only on auth/request errors (4xx).
-    const MODELS = ['gemini-2.0-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash-lite', 'gemini-2.5-flash', 'gemini-flash-latest'];
+    const MODELS = ['gemini-2.0-flash', 'gemini-2.5-flash-lite'];
     let lastStatus = 'none';
     for (const model of MODELS) {
       try {
