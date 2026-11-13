@@ -100,18 +100,44 @@ if (chat) {
     (open ? input : toggle).focus();
   }
 
-  function reply(question) {
+  const CHAT_API = 'https://dawn-wave-aa6e.forhadhossain00093.workers.dev';
+  const history = [];
+  let pending = false;
+
+  async function reply(question) {
     const message = question.trim();
-    if (!message) return;
+    if (!message || pending) return;
     const visitor = document.createElement('p');
     visitor.className = 'chat-visitor';
     visitor.textContent = message;
     const answer = document.createElement('p');
-    answer.textContent = chatAnswer(message);
+    answer.className = 'chat-waiting';
+    answer.textContent = '…';
     log.append(visitor, answer);
     log.scrollTop = log.scrollHeight;
     input.value = '';
     input.focus();
+    history.push({ role: 'user', text: message });
+    pending = true;
+    let text = '';
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 20000);
+      const res = await fetch(CHAT_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history.slice(-10) }),
+        signal: controller.signal,
+      });
+      clearTimeout(timer);
+      if (res.ok) text = (await res.json()).reply || '';
+    } catch {}
+    pending = false;
+    if (!text) text = chatAnswer(message);
+    history.push({ role: 'model', text });
+    answer.classList.remove('chat-waiting');
+    answer.textContent = text;
+    log.scrollTop = log.scrollHeight;
   }
 
   toggle?.addEventListener('click', () => showChat(panel.hidden));
