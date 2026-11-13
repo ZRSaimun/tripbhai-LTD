@@ -59,30 +59,47 @@ export default {
       return json({ error: 'no question' }, 400, cors);
     }
 
-    const api = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
     const payload = {
       systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
       contents,
       generationConfig: { temperature: 0.4, maxOutputTokens: 1000 },
     };
 
-    try {
-      const upstream = await fetch(api, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-goog-api-key': env.GEMINI_API_KEY,
-        },
-        body: JSON.stringify(payload),
-      });
-      if (!upstream.ok) return json({ error: 'upstream ' + upstream.status }, 502, cors);
-      const data = await upstream.json();
-      const reply = data?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('').trim();
-      if (!reply) return json({ error: 'empty' }, 502, cors);
-      return json({ reply }, 200, cors);
-    } catch {
-      return json({ error: 'unavailable' }, 502, cors);
+    // Try several models in order; a single overloaded model (503) shouldn't
+    // block the chat. Stop early only on auth/request errors (4xx).
+    const MODELS = ['gemini-2.0-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash-lite', 'gemini-2.5-flash', 'gemini-flash-latest'];
+    let lastStatus = 'none';
+    for (const model of MODELS) {
+      try {
+        const upstream = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-goog-api-key': env.GEMINI_API_KEY,
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+        if (upstream.ok) {
+          const data = await upstream.json();
+          const reply = data?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('').trim();
+          if (reply) return json({ reply }, 200, cors);
+          lastStatus = 'empty';
+          continue;
+        }
+        lastStatus = upstream.status;
+        // 400/401/403 = bad key or request: trying other models won't help.
+        if (upstream.status === 400 || upstream.status === 401 || upstream.status === 403) {
+          return json({ error: 'upstream ' + upstream.status }, 502, cors);
+        }
+        // 429/500/503 etc: fall through to the next model.
+      } catch (e) {
+        lastStatus = 'threw';
+      }
     }
+    return json({ error: 'upstream ' + lastStatus }, 502, cors);
   },
 };
 
