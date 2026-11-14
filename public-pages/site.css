@@ -33,6 +33,19 @@
 .visa-trust a + a { border-left: 1px solid var(--line); }
 .visa-trust a:hover strong { text-decoration: underline; }
 .visa-trust span { color: var(--muted); font-size: .86rem; }
+.traveller-proof { background: #102d30; color: #f7f6ef; overflow: hidden; }
+.traveller-proof-inner { display:grid; grid-template-columns: .95fr 1.05fr; gap: clamp(30px,7vw,100px); align-items:center; padding-block: clamp(58px,8vw,110px); }
+.traveller-proof-copy h2 { max-width: 13ch; font-size:clamp(2.5rem,4.4vw,4.5rem); }
+.traveller-proof-copy .eyebrow { color:#e3bb7c; }
+.traveller-proof-copy p:not(.eyebrow) { color:#c4d3ce; max-width:55ch; }
+.traveller-proof-copy .button { margin-top:14px; background:#f7f6ef; color:#102d30; border-color:#f7f6ef; }
+.traveller-proof-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.2); }
+.traveller-proof-grid article { padding:28px; min-height:190px; background:rgba(16,45,48,.88); transition:background .3s, transform .3s; }
+.traveller-proof-grid article:hover { background:#1b4648; transform:translateY(-4px); }
+.traveller-proof-grid span { color:#e3bb7c; font-size:.7rem; letter-spacing:.16em; }
+.traveller-proof-grid h3 { font:400 1.65rem/1.1 var(--serif); margin:28px 0 10px; }
+.traveller-proof-grid p { color:#b9cbc5; font-size:.88rem; margin:0; }
+@media (max-width:760px) { .traveller-proof-inner { grid-template-columns:1fr; } .traveller-proof-grid article { min-height:160px; padding:20px; } .traveller-proof-grid h3 { margin-top:20px; font-size:1.4rem; } }
 
 .visa-process ol {
   display: grid;
