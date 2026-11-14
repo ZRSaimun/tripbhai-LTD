@@ -51,6 +51,21 @@ const visaPreparation = [
   'The exact checklist depends on your destination, nationality, country of application and visa type. Follow the relevant visa authority’s official checklist for document formats, translations and originals.'
 ].join('\n');
 
+const countryGuidance = {
+  france: 'France: prepare the current France-Visas checklist for your visa type and apply through the official provider listed for your country of application.',
+  italy: 'Italy: check the Italian consulate or official visa provider for your place of lawful residence; requirements vary by purpose and nationality.',
+  spain: 'Spain: use the Spanish consulate or official visa provider checklist for your place of application, including appointment and translation rules.',
+  germany: 'Germany: use the German mission or official provider checklist for your place of application and intended main destination.',
+  greece: 'Greece: check the Greek mission or official provider for the current Schengen checklist and appointment process.',
+  portugal: 'Portugal: check the Portuguese mission or official provider for the current checklist and application route.',
+  switzerland: 'Switzerland: use the Swiss mission or official provider checklist for your place of application.',
+  netherlands: 'Netherlands: check the Dutch mission or official provider checklist and appointment requirements.',
+  ireland: 'Ireland: use the Irish Immigration Service Delivery checklist for your reason for travel and country of application.',
+  australia: 'Australia: check the Department of Home Affairs visitor visa requirements and apply through the official online route where applicable.',
+  canada: 'Canada: check the official IRCC visitor visa checklist for your nationality and country of application.',
+  'united states': 'United States: check the official U.S. visitor visa guidance and embassy instructions for your place of application.'
+};
+
 function chatAnswer(question) {
   const text = question.toLowerCase();
   if (/\b(?:uk|british|graduate)\s+(?:(?:student|visit|work|visitor|spouse)\s+)?(?:visa|immigration|settlement)\b|\b(?:visa|immigration)\b.*\b(?:to|for)\s+(?:the\s+)?uk\b|\b(?:ilr|psw)\b/.test(text)) {
@@ -58,12 +73,16 @@ function chatAnswer(question) {
   }
   if (/\b(document\w*|paperwork|checklist|bank statement\w*|payslip\w*|proof of funds|passport\w*|what (?:do|should) i (?:send|prepare)|what (?:to|can i) (?:send|upload))\b/.test(text) && !/\b(flight only|hotel only)\b/.test(text)) {
     let route = '';
-    if (/\bireland\b/.test(text)) {
-      route = 'For Ireland, use the Irish Immigration Service Delivery checklist for your reason for travel.';
-    } else if (/\b(schengen|spain|france|italy|germany|greece|portugal|switzerland|netherlands)\b/.test(text)) {
-      route = 'For Schengen, check the destination consulate’s checklist for the country where you apply.';
-    }
+    const destination = Object.keys(countryGuidance).find((country) => text.includes(country));
+    if (destination) route = countryGuidance[destination];
+    else if (/\bschengen\b/.test(text)) route = 'For Schengen, check the destination consulate’s checklist for the country where you apply and the country that is your main destination.';
     return [firstVisaEnquiry, visaPreparation, route].filter(Boolean).join('\n\n');
+  }
+  if (/\b(alone|solo|tour guide|guide|companion|escort|meet me|pick me up)\b/.test(text)) {
+    return 'Travelling alone? Tell us your destination, dates and the kind of support you need. We can check whether an optional local guide or arranged companion service is available for your route. Availability, safety arrangements and cost must be confirmed before booking.';
+  }
+  if (/\b(online|offline|meeting|appointment|visit office|face to face|in person)\b/.test(text)) {
+    return 'We can usually start by chat, email or phone. In-person meetings are by prior arrangement only; contact the team first to confirm availability and location.';
   }
   if (/\b(contact|human|phone|email|whatsapp|call|agent|team)\b/.test(text)) {
     return 'You can email tripbhaiofficial@gmail.com or call +44 7514 718031. Use the contact link below to prepare an enquiry.';
