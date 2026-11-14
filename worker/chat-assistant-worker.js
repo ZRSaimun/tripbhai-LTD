@@ -59,47 +59,66 @@ export default {
       return json({ error: 'no question' }, 400, cors);
     }
 
-    const payload = {
-      systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-      contents,
-      generationConfig: { temperature: 0.4, maxOutputTokens: 1000 },
-    };
-
-    // Try several models in order; a single overloaded model (503) shouldn't
-    // block the chat. Stop early only on auth/request errors (4xx).
-    const MODELS = ['gemini-2.0-flash', 'gemini-2.5-flash-lite'];
-    let lastStatus = 'none';
-    for (const model of MODELS) {
+    // 1) Cloudflare Workers AI — free, runs on this same platform, no external
+    // quota or API key. This is the primary assistant.
+    if (env.AI) {
       try {
-        const upstream = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-goog-api-key': env.GEMINI_API_KEY,
-            },
-            body: JSON.stringify(payload),
-          }
-        );
-        if (upstream.ok) {
-          const data = await upstream.json();
-          const reply = data?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('').trim();
-          if (reply) return json({ reply }, 200, cors);
-          lastStatus = 'empty';
-          continue;
+        const aiMessages = [{ role: 'system', content: SYSTEM_PROMPT }];
+        for (const c of contents) {
+          aiMessages.push({
+            role: c.role === 'model' ? 'assistant' : 'user',
+            content: c.parts[0].text,
+          });
         }
-        lastStatus = upstream.status;
-        // 400/401/403 = bad key or request: trying other models won't help.
-        if (upstream.status === 400 || upstream.status === 401 || upstream.status === 403) {
-          return json({ error: 'upstream ' + upstream.status }, 502, cors);
-        }
-        // 429/500/503 etc: fall through to the next model.
+        const out = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
+          messages: aiMessages,
+          max_tokens: 1000,
+          temperature: 0.4,
+        });
+        const reply = (out && typeof out.response === 'string' ? out.response : '').trim();
+        if (reply) return json({ reply }, 200, cors);
       } catch (e) {
-        lastStatus = 'threw';
+        // fall through to Gemini
       }
     }
-    return json({ error: 'upstream ' + lastStatus }, 502, cors);
+
+    // 2) Google Gemini free tier — secondary, used only if Workers AI is
+    // unavailable and a key is configured.
+    if (env.GEMINI_API_KEY) {
+      const payload = {
+        systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+        contents,
+        generationConfig: { temperature: 0.4, maxOutputTokens: 1000 },
+      };
+      const MODELS = ['gemini-2.0-flash', 'gemini-2.5-flash-lite'];
+      for (const model of MODELS) {
+        try {
+          const upstream = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-goog-api-key': env.GEMINI_API_KEY,
+              },
+              body: JSON.stringify(payload),
+            }
+          );
+          if (upstream.ok) {
+            const data = await upstream.json();
+            const reply = data?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('').trim();
+            if (reply) return json({ reply }, 200, cors);
+            continue;
+          }
+          if (upstream.status === 400 || upstream.status === 401 || upstream.status === 403) break;
+        } catch (e) {
+          // try next model
+        }
+      }
+    }
+
+    // 3) Nothing available right now — widget shows its built-in answers.
+    return json({ error: 'unavailable' }, 502, cors);
   },
 };
 
