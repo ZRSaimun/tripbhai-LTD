@@ -6,8 +6,8 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'public-pages'
 PORTAL = 'https://beyond-travel-portfolio.saintblue022.chatgpt.site'
 TEAM = [('ZR Saimon','Founder','ZR'),('Riazul Iqbal Feroz','Dubai Country Manager','RF'),('Umme Sumaiya','Director, Client Relations','US'),('Aumlanul Abrar','Director of UK Operations & Technology','AA')]
-SCHENGEN_ARCHIVE = tuple((f'spain-{i:02}', 'Spain') for i in range(1, 7)) + (('switzerland', 'Switzerland'),)
-UK_ARCHIVE = (('uk-01', 'UK student visa'), ('uk-02', 'UK student visa'))
+SCHENGEN_ARCHIVE = tuple((f'story-{i:02}', 'Schengen visa') for i in range(1, 8))
+UK_ARCHIVE = (('story-08', 'UK student visa'), ('story-09', 'UK student visa'))
 TRAVEL_ARCHIVE = (('cabin', 'From the cabin'), ('terminal', 'At the terminal'))
 NAV = [('visa-successes','Visa stories'),('visa-services','Visa enquiries'),('flights-travel','Travel planning'),('about','Our company'),('team','Our people'),('contact','Contact')]
 
