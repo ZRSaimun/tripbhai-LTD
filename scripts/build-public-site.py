@@ -106,6 +106,23 @@ home='''<section class="hero wrap visa-hero">
   <a href="./team/"><strong>Speak with a real person</strong><span>Meet the team behind your enquiry</span></a>
   <a href="tel:+447514718031"><strong>Prefer to talk?</strong><span>Call +44 7514 718031</span></a>
 </section>
+<section class="traveller-proof" aria-labelledby="traveller-proof-title">
+  <div class="wrap traveller-proof-inner">
+    <div class="traveller-proof-copy">
+      <p class="eyebrow">BUILT FROM REAL JOURNEYS</p>
+      <h2 id="traveller-proof-title">We know the feeling of planning a trip from the other side of the desk.</h2>
+      <p>Saimun’s own travel story moves through London, Dubai, Europe, the Gulf and beyond. TripBhai grew from that experience: a team that understands the questions before a journey, because we have had to ask them too.</p>
+      <p>From your first message to the moment you arrive, we can help you understand the next step, organise the practical details and find the right human support.</p>
+      <a class="button" href="./about/">Meet the people behind TripBhai <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="traveller-proof-grid">
+      <article><span>01</span><h3>Visa guidance</h3><p>Destination-focused checklists, application orientation and clear next steps.</p></article>
+      <article><span>02</span><h3>Stay & route planning</h3><p>Accommodation, flights and the practical pieces around your journey.</p></article>
+      <article><span>03</span><h3>Online & offline help</h3><p>Chat, email, calls and arranged meetings when you need a real person.</p></article>
+      <article><span>04</span><h3>Optional tour support</h3><p>Travelling alone? Ask whether a local guide or companion arrangement is available for your route.</p></article>
+    </div>
+  </div>
+</section>
 '''+visa_stories_feature(on_home=True)+'''<section class="journey-film" id="journey-film" aria-labelledby="journey-film-title">
   <div class="journey-film-intro wrap">
     <p class="eyebrow">HOW WE HELP</p>
