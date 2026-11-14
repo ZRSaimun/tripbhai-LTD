@@ -34,7 +34,7 @@ join public.cases c on c.id=f.id
 join public.clients cl on cl.id=c.client_id
 where f.kind='doc_pending';
 
-insert into public.quotes(id,case_id,currency,amount_minor,status)
+insert into public.messages(case_id,author_id,visibility,body)\nselect c.id,cl.account_id,'internal','private note' from public.cases c join public.clients cl on cl.id=c.client_id\nwhere c.id=(select id from portal_fixture_ids where kind='case_a')\nunion all\nselect c.id,cl.account_id,'client','client B message' from public.cases c join public.clients cl on cl.id=c.client_id\nwhere c.id=(select id from portal_fixture_ids where kind='case_b');\n\ninsert into public.quotes(id,case_id,currency,amount_minor,status)
 select q.id,c.id,'GBP',1000,'sent'
 from portal_fixture_ids q, portal_fixture_ids f join public.cases c on c.id=f.id
 where q.kind='quote_a' and f.kind='case_a';
