@@ -4,7 +4,9 @@ from html import escape
 import json
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'public-pages'
-PORTAL = 'https://beyond-travel-portfolio.saintblue022.chatgpt.site'
+# Keep portal links on the Trip Bhai domain; the public build must not send
+# clients to the temporary ChatGPT-hosted project.
+PORTAL = 'https://tripbhai.co.uk'
 TEAM = [('ZR Saimon','Founder','ZR'),('Riazul Iqbal Feroz','Dubai Country Manager','RF'),('Umme Sumaiya','Director, Client Relations','US'),('Aumlanul Abrar','Director of UK Operations & Technology','AA')]
 SCHENGEN_ARCHIVE = tuple((f'story-{i:02}', f'Schengen visa story {i:02}') for i in range(1, 8))
 UK_ARCHIVE = (('story-08', 'UK student visa story 08'), ('story-09', 'UK student visa story 09'))
