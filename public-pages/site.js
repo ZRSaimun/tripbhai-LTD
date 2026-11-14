@@ -14,7 +14,12 @@ document.addEventListener('keydown', event => {
 });
 const form = document.querySelector('#enquiry');
 if (form) {
-  const service = new URLSearchParams(location.search).get('service');
+  const params = new URLSearchParams(location.search);
+  const service = params.get('service');
+  const destination = form.elements.namedItem('destination');
+  if (!destination.value && params.has('destination')) {
+    destination.value = params.get('destination').trim().slice(0, destination.maxLength);
+  }
   const select = form.elements.namedItem('service');
   if ([...select.options].some(option => option.value === service)) select.value = service;
   ['Visa documents and checklist','Hotels and accommodation','Airport assistance','Solo traveller guide','Full trip planning'].forEach(label => {
