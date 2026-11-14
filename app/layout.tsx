@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased"><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({'@context':'https://schema.org','@type':'TravelAgency',name:'Trip Bhai',legalName:'TRIP BHAI LTD',url:'https://beyond-travel-portfolio.saintblue022.chatgpt.site',telephone:'+44 7514 718031',email:'tripbhaiofficial@gmail.com',identifier:{'@type':'PropertyValue',propertyID:'UK company number',value:'16286072'},sameAs:'https://find-and-update.company-information.service.gov.uk/company/16286072'})}}/>{children}</body>
+      <body className="antialiased"><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({'@context':'https://schema.org','@type':'TravelAgency',name:'Trip Bhai',legalName:'TRIP BHAI LTD',url:'https://tripbhai.co.uk',telephone:'+44 7514 718031',email:'tripbhaiofficial@gmail.com',identifier:{'@type':'PropertyValue',propertyID:'UK company number',value:'16286072'},sameAs:'https://find-and-update.company-information.service.gov.uk/company/16286072'})}}/>{children}</body>
     </html>
   );
 }
