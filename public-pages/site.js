@@ -83,15 +83,21 @@ const countryGuidance = {
 
 function chatAnswer(question) {
   const text = question.toLowerCase();
+  if (/^(hi|hello|hey|good morning|good afternoon|good evening|how are you|how do you do)\b/.test(text)) {
+    return 'Hello! Welcome to TripBhai 👋\n\nI’m here to help with visit visa enquiries, document preparation, flights, accommodation and travel planning.\n\nWhat would you like help with today?';
+  }
+  if (/\b(who are you|what can you do|how can you help|help me)\b/.test(text)) {
+    return 'I’m TripBhai’s AI travel assistant. I can help you understand:\n\n• visit visa preparation and common documents\n• Schengen, Canada, Australia, USA and Ireland enquiries\n• flights, hotels and accommodation\n• solo-travel and tour-guide support\n• how to contact our human team\n\nTell me your destination and what you are planning.';
+  }
   if (/\b(?:uk|british|graduate)\s+(?:(?:student|visit|work|visitor|spouse)\s+)?(?:visa|immigration|settlement)\b|\b(?:visa|immigration)\b.*\b(?:to|for)\s+(?:the\s+)?uk\b|\b(?:ilr|psw)\b/.test(text)) {
-    return 'TripBhai does not currently offer UK immigration advice. For a question about travelling from the UK to another country, tell our team your destination.';
+    return 'TripBhai does not currently provide UK immigration advice or representation. For travel from the UK to another country, tell me your destination, reason for travel and approximate dates, and I’ll explain the next enquiry step.';
   }
   if (/\b(document\w*|paperwork|checklist|bank statement\w*|payslip\w*|proof of funds|passport\w*|what (?:do|should) i (?:send|prepare)|what (?:to|can i) (?:send|upload))\b/.test(text) && !/\b(flight only|hotel only)\b/.test(text)) {
     let route = '';
     const destination = Object.keys(countryGuidance).find((country) => text.includes(country));
     if (destination) route = countryGuidance[destination];
     else if (/\bschengen\b/.test(text)) route = 'For Schengen, check the destination consulate’s checklist for the country where you apply and the country that is your main destination.';
-    return [firstVisaEnquiry, visaPreparation, route].filter(Boolean).join('\n\n');
+    return ['Here’s a useful starting point for your visa enquiry:', firstVisaEnquiry, visaPreparation, route, 'If you tell me your nationality, country of application and destination, I can make the guidance more relevant.'].filter(Boolean).join('\n\n');
   }
   if (/\b(alone|solo|tour guide|guide|companion|escort|meet me|pick me up)\b/.test(text)) {
     return 'Travelling alone? Tell us your destination, dates and the kind of support you need. We can check whether an optional local guide or arranged companion service is available for your route. Availability, safety arrangements and cost must be confirmed before booking.';
@@ -100,7 +106,7 @@ function chatAnswer(question) {
     return 'We can usually start by chat, email or phone. In-person meetings are by prior arrangement only; contact the team first to confirm availability and location.';
   }
   if (/\b(contact|human|phone|email|whatsapp|call|agent|team)\b/.test(text)) {
-    return 'You can email tripbhaiofficial@gmail.com or call +44 7514 718031. Use the contact link below to prepare an enquiry.';
+    return 'You can email tripbhaiofficial@gmail.com or call +44 7514 718031. Use the contact link below to prepare an enquiry, and a TripBhai team member can follow up with you.';
   }
   if (/\b(guarantee\w*|approved|approval\w*|success\w*|refus\w*|reject\w*)\b/.test(text)) {
     return 'Visa authorities decide each application. TripBhai cannot guarantee approval. For questions about your circumstances, contact the team below.';
@@ -117,7 +123,7 @@ function chatAnswer(question) {
   if (/\b(hotel\w*|holiday\w*|accommodation|stay|package\w*)\b/.test(text)) {
     return 'For hotels or holidays, tell the team your destination, dates, number of travellers and budget. They can help you explore available options.';
   }
-  return 'I can help with common questions about visas, flights and hotels. For anything else, use the contact link below and our team can pick it up.';
+  return 'I can help with visit visas, travel documents, flights, accommodation and tour support. Tell me your destination and what you need help with, or use the contact link below to speak with the TripBhai team.';
 }
 
 const chat = document.querySelector('#site-chat');
