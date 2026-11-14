@@ -114,8 +114,8 @@ function chatAnswer(question) {
   if (/\b(how (much|long)|cost\w*|price\w*|fee\w*|quote\w*|processing|timeline)\b/.test(text)) {
     return 'Costs and times vary by service and destination. Send the team your destination, approximate dates and what help you need so they can confirm what is available.';
   }
-  if (/\b(visa\w*|schengen|ireland|document\w*|passport\w*)\b/.test(text)) {
-    return 'For a visit visa enquiry, share your destination, reason for travel and approximate dates through the contact page. The team will confirm what help is available for your trip.';
+  if (/\b(visa\w*|schengen|ireland|canada|australia|new zealand|usa|united states|document\w*|passport\w*)\b/.test(text)) {
+    return 'TripBhai supports visit visa enquiries worldwide, with particular experience in Schengen, Canada, Australia, New Zealand, the USA and Ireland. Share your destination, nationality, country of application, reason for travel and approximate dates through the contact page. The team will confirm the right support for your case.';
   }
   if (/\b(flight\w*|airline\w*|ticket\w*|airport\w*|baggage)\b/.test(text)) {
     return 'For flight enquiries, share your departure airport, destination, dates and passenger count. The team can confirm available options and prices.';
