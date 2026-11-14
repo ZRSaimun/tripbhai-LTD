@@ -4,17 +4,17 @@
 <main id="main"><section class="page-head wrap"><p class="eyebrow">INSTANT HELP</p><h1>Chat with TripBhai</h1><p class="lead">Type a question or choose a topic to get an automated reply.</p></section><section class="wrap chat-page"><div class="site-chat site-chat-inline" id="site-chat" hidden>
 
 <section class="chat-panel" id="chat-panel" aria-labelledby="chat-title" hidden>
-  <header><h2 id="chat-title">TripBhai help</h2></header>
+  <header><div class="chat-avatar" aria-hidden="true">AI</div><div><p class="chat-kicker">TRIP BHAI</p><h2 id="chat-title">TripBhai AI assistant</h2></div></header>
   <div class="chat-messages" role="log" aria-live="polite" aria-label="Chat messages" tabindex="0">
-    <p>Hi! Ask me about visit visas, flights, hotels or how to reach our team.</p>
+    <p class="chat-welcome">I'm TripBhai's AI assistant 👋<br>Ask me anything about visas, travel planning or how our team can help.</p>
   </div>
   <div class="chat-topics" aria-label="Common questions">
-    <button type="button">Visa documents</button><button type="button">Visit visas</button><button type="button">Flights</button><button type="button">Hotels</button><button type="button">Contact the team</button>
+    <button type="button">What documents do I need?</button><button type="button">Help with a visa</button><button type="button">Flights and hotels</button><button type="button">Speak to the team</button>
   </div>
   <form class="chat-form">
     <label for="chat-question" class="chat-label">Your question</label>
     <input id="chat-question" type="text" maxlength="240" autocomplete="off" required placeholder="Ask a question">
-    <button type="submit">Send</button>
+    <button type="submit" aria-label="Send message">Send</button>
   </form>
   <p class="chat-privacy">AI assistant — replies are automated and can make mistakes; our team confirms details by email. Please keep passport and payment details out of chat.</p>
   <a class="chat-contact" href="../contact/">Talk to the TripBhai team →</a>
