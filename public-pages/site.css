@@ -689,3 +689,19 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;o
 @media (prefers-reduced-motion: reduce) {
   .navigation nav { scroll-behavior: auto; }
 }
+
+.navigation nav .mobile-plan { display: none; }
+
+@media (max-width: 420px) {
+  .navigation nav .mobile-plan { display: flex; font-weight: 700; }
+  .footer-top { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 760px) {
+  .site-chat:has(.chat-panel:not([hidden])) ~ .floating-whatsapp { visibility: hidden; }
+  .navigation nav { max-height: calc(100dvh - 115px); overscroll-behavior: contain; }
+  .chat-panel { max-height: calc(100dvh - 95px - env(safe-area-inset-bottom)); }
+  .chat-panel .chat-messages { flex: 1 1 auto; min-height: 4rem; }
+  .chat-panel header, .chat-panel .chat-form { flex-shrink: 0; }
+  .site-chat-inline .chat-panel { max-height: none; }
+}
